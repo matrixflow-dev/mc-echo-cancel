@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "echocancel",
+  "version": "${version}",
+  "name": "Voice Chat Echo Cancel",
+  "description": "Removes the echo of other players' voices from your microphone in Simple Voice Chat, so you can talk without headphones.",
+  "authors": ["Tdual"],
+  "contact": {
+    "sources": "https://github.com/matrixflow-dev/mc-echo-cancel"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "voicechat": ["io.github.tdual.echocancel.EchoCancelPlugin"]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "voicechat_api": ">=2.6.0"
+  }
+}

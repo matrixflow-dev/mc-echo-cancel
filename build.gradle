@@ -1,0 +1,54 @@
+plugins {
+    id 'java'
+}
+
+group = 'io.github.tdual.echocancel'
+version = '0.1.0'
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.maxhenkel.de/repository/public' }
+}
+
+dependencies {
+    // Provided at runtime by Simple Voice Chat. The mod uses no Minecraft classes, so it needs
+    // no remapping and builds without Fabric Loom.
+    compileOnly 'de.maxhenkel.voicechat:voicechat-api:2.6.27'
+    // Minecraft ships SLF4J.
+    compileOnly 'org.slf4j:slf4j-api:2.0.17'
+
+    testImplementation 'de.maxhenkel.voicechat:voicechat-api:2.6.27'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    testRuntimeOnly 'org.slf4j:slf4j-nop:2.0.17'
+    testImplementation 'org.slf4j:slf4j-api:2.0.17'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
+}
+
+tasks.withType(JavaCompile).configureEach {
+    // Minecraft 26.3 runs on Java 25; 21 keeps the jar loadable on older launch setups too.
+    options.release = 21
+}
+
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') {
+        expand version: project.version
+    }
+}
+
+jar {
+    archiveBaseName = 'echocancel-fabric'
+    from('LICENSE')
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events 'failed'
+        showStandardStreams = true
+    }
+}
